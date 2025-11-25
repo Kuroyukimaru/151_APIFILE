@@ -1,19 +1,17 @@
-// routers/api.js
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
 
 const komikController = require('../controllers/komikController');
+const multer = require('multer');
 
-// Setup multer untuk upload gambar (disimpan di memory)
-const upload = multer({ storage: multer.memoryStorage() });
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-// ====== KOMIK ROUTES ======
-router.post('/komiks', upload.single('gambar'), komikController.createKomik);
-router.get('/komiks', komikController.getAllKomik);
-router.get('/komiks/:id', komikController.getKomikById);
-router.put('/komiks/:id', upload.single('gambar'), komikController.updateKomik);
-router.delete('/komiks/:id', komikController.deleteKomik);
+// ROUTES
+router.post('/komik', upload.single('image'), komikController.createKomik);
+router.get('/komik', komikController.getAllKomik);
+router.get('/komik/:id', komikController.getKomikById);
+router.put('/komik/:id', upload.single('image'), komikController.updateKomik);
+router.delete('/komik/:id', komikController.deleteKomik);
 
-// Export router untuk digunakan di index.js
 module.exports = router;
