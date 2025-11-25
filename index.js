@@ -1,22 +1,28 @@
 const express = require('express');
 const connectDatabase = require('./config/db');
+const apiRoutes = require('./routers/api');
 
 const app = express();
 const PORT = 3000;
 
+// Middleware untuk parsing request body
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Contoh route langsung tanpa folder routes
-app.get('/api/v1', (req, res) => {
-    res.json({ message: 'API is running without routes folder!' });
-});
+// Semua endpoint API ada di folder routers/api.js
+app.use('/api', apiRoutes);
 
+// Fungsi menjalankan server + konek ke database
 async function startServer() {
-    await connectDatabase();
-    app.listen(PORT, () => {
-        console.log(`🚀 Server is running on http://localhost:${PORT}`);
-    });
+    try {
+        await connectDatabase();
+        app.listen(PORT, () => {
+            console.log(`🚀 Server is running on http://localhost:${PORT}`);
+        });
+    } catch (err) {
+        console.error("❌ Failed to start server:", err.message);
+        process.exit(1);
+    }
 }
 
 startServer();

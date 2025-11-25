@@ -1,4 +1,4 @@
-|async function createKomik(database, komikData) {
+async function createKomik(database, komikData) {
     const{tittle,description,author,imageType,imageName,imageData}= komikData;
 
     if(!tittle || !description || !author){
